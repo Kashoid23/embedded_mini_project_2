@@ -1,0 +1,5 @@
+../Core/Src/button.c:4:13:button_is_down	16	static
+../Core/Src/button.c:8:6:button_init	24	static
+../Core/Src/button.c:17:6:button_on_edge_irq	16	static
+../Core/Src/button.c:21:6:button_update	16	static
+../Core/Src/button.c:67:6:button_take_press	24	static
