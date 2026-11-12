@@ -1,32 +1,37 @@
 #include "buzzer.h"
-#include "config.h"
 
 #include <stdbool.h>
 #include <stddef.h>
+
+#include "config.h"
 
 typedef struct {
 	uint16_t freq_hz;
 	uint16_t dur_ms;
 } tone_step_t;
 
-static const tone_step_t crossing_tone[] = {
-	{ 2800U, 26U }, { 2550U, 26U }, { 2300U, 26U }, { 2050U, 26U }, { 1800U, 26U },
+#define PIYO_CHIRP \
+	{ 2800U, 26U }, { 2550U, 26U }, { 2300U, 26U }, { 2050U, 26U }, { 1800U, 26U }
+
+static const tone_step_t k_crossing_tone[] = {
+	PIYO_CHIRP,
 	{ 0U, 1170U },
-	{ 2800U, 26U }, { 2550U, 26U }, { 2300U, 26U }, { 2050U, 26U }, { 1800U, 26U },
-	{ 0U, 90U },
-	{ 2800U, 26U }, { 2550U, 26U }, { 2300U, 26U }, { 2050U, 26U }, { 1800U, 26U },
+	PIYO_CHIRP,
+	{ 0U,   90U },
+	PIYO_CHIRP,
 	{ 0U, 1150U },
 };
 
-#define CROSSING_TONE_STEPS_COUNT (sizeof(crossing_tone) / sizeof(crossing_tone[0]))
+#define CROSSING_TONE_STEP_COUNT  (sizeof(k_crossing_tone) / sizeof(k_crossing_tone[0]))
 
-static TIM_HandleTypeDef *s_htim 	= NULL;
-static uint32_t s_channel 			= 0U;
-static bool s_active 				= false;
-static size_t s_step  				= 0U;
-static uint32_t s_t_step_ms			= 0U;
+static TIM_HandleTypeDef *s_htim      = NULL;
+static uint32_t           s_channel   = 0U;
+static bool               s_active    = false;
+static size_t             s_step      = 0U;
+static uint32_t           s_t_step_ms = 0U;
 
-static void buzzer_set_tone (uint16_t freq_hz) {
+static void buzzer_set_tone(uint16_t freq_hz)
+{
 	if (s_htim == NULL) {
 		return;
 	}
@@ -41,34 +46,38 @@ static void buzzer_set_tone (uint16_t freq_hz) {
 	}
 }
 
-void buzzer_init (TIM_HandleTypeDef *htim, uint32_t channel) {
-	s_htim = htim;
+void buzzer_init(TIM_HandleTypeDef *htim, uint32_t channel)
+{
+	s_htim    = htim;
 	s_channel = channel;
-	s_active = false;
+	s_active  = false;
 	buzzer_set_tone(0U);
 	(void)HAL_TIM_PWM_Start(s_htim, s_channel);
 }
 
-void buzzer_start_crossing_sound(uint32_t now_ms) {
-	s_active = true;
-	s_step = 0U;
+void buzzer_start_crossing_sound(uint32_t now_ms)
+{
+	s_active    = true;
+	s_step      = 0U;
 	s_t_step_ms = now_ms;
-	buzzer_set_tone(crossing_tone[s_step].freq_hz);
+	buzzer_set_tone(k_crossing_tone[0].freq_hz);
 }
 
-void buzzer_stop(void) {
+void buzzer_stop(void)
+{
 	s_active = false;
 	buzzer_set_tone(0U);
 }
 
-void buzzer_update (uint32_t now_ms) {
+void buzzer_update(uint32_t now_ms)
+{
 	if (!s_active) {
 		return;
 	}
 
-	if ((now_ms - s_t_step_ms) >= crossing_tone[s_step].dur_ms) {
-		s_t_step_ms += crossing_tone[s_step].dur_ms;
-		s_step = (s_step + 1U) % CROSSING_TONE_STEPS_COUNT;
-		buzzer_set_tone(crossing_tone[s_step].freq_hz);
+	if ((now_ms - s_t_step_ms) >= k_crossing_tone[s_step].dur_ms) {
+		s_t_step_ms += k_crossing_tone[s_step].dur_ms;
+		s_step = (s_step + 1U) % CROSSING_TONE_STEP_COUNT;
+		buzzer_set_tone(k_crossing_tone[s_step].freq_hz);
 	}
 }

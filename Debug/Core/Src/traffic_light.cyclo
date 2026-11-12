@@ -1,11 +1,6 @@
-../Core/Src/traffic_light.c:61:13:led_set	1
-../Core/Src/traffic_light.c:65:13:leds_set_state	3
-../Core/Src/traffic_light.c:73:13:leds_set	1
-../Core/Src/traffic_light.c:78:13:relay_set	1
-../Core/Src/traffic_light.c:82:13:wait_led_set	1
-../Core/Src/traffic_light.c:86:13:led_fsm	7
-../Core/Src/traffic_light.c:125:6:tl_init	1
-../Core/Src/traffic_light.c:134:6:tl_request_crossing	5
-../Core/Src/traffic_light.c:144:6:tl_set_fault	2
-../Core/Src/traffic_light.c:156:6:tl_update	17
-../Core/Src/traffic_light.c:214:12:tl_get_state	1
+../Core/Src/traffic_light.c:76:13:tl_enter	2
+../Core/Src/traffic_light.c:92:6:tl_init	1
+../Core/Src/traffic_light.c:102:6:tl_request_crossing	3
+../Core/Src/traffic_light.c:111:6:tl_set_fault	2
+../Core/Src/traffic_light.c:120:6:tl_update	9
+../Core/Src/traffic_light.c:155:12:tl_get_state	1

@@ -1,5 +1,6 @@
 Core/Src/traffic_light.o: ../Core/Src/traffic_light.c \
- ../Core/Inc/traffic_light.h ../Core/Inc/main.h \
+ ../Core/Inc/traffic_light.h ../Core/Inc/config.h ../Core/Inc/led.h \
+ ../Core/Inc/relay.h ../Core/Inc/buzzer.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -27,10 +28,12 @@ Core/Src/traffic_light.o: ../Core/Src/traffic_light.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Core/Inc/config.h ../Core/Inc/buzzer.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 ../Core/Inc/traffic_light.h:
-../Core/Inc/main.h:
+../Core/Inc/config.h:
+../Core/Inc/led.h:
+../Core/Inc/relay.h:
+../Core/Inc/buzzer.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
@@ -59,5 +62,3 @@ Core/Src/traffic_light.o: ../Core/Src/traffic_light.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
-../Core/Inc/config.h:
-../Core/Inc/buzzer.h:

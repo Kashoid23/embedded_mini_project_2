@@ -1,5 +1,5 @@
-../Core/Src/buzzer.c:29:13:buzzer_set_tone	24	static
-../Core/Src/buzzer.c:44:6:buzzer_init	16	static
-../Core/Src/buzzer.c:52:6:buzzer_start_crossing_sound	16	static
-../Core/Src/buzzer.c:59:6:buzzer_stop	8	static
-../Core/Src/buzzer.c:64:6:buzzer_update	16	static
+../Core/Src/buzzer.c:33:13:buzzer_set_tone	24	static
+../Core/Src/buzzer.c:49:6:buzzer_init	16	static
+../Core/Src/buzzer.c:58:6:buzzer_start_crossing_sound	16	static
+../Core/Src/buzzer.c:66:6:buzzer_stop	8	static
+../Core/Src/buzzer.c:72:6:buzzer_update	16	static
