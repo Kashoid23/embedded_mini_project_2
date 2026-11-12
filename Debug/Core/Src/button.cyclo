@@ -1,0 +1,4 @@
+../Core/Src/button.c:7:13:button_is_down	1
+../Core/Src/button.c:12:6:button_init	1
+../Core/Src/button.c:22:6:button_on_edge_irq	1
+../Core/Src/button.c:27:6:button_tick	12

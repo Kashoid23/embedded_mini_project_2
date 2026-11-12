@@ -1,0 +1,3 @@
+../Core/Src/led.c:20:13:led_drive_matching	3
+../Core/Src/led.c:29:6:led_set	2
+../Core/Src/led.c:37:6:led_apply_pattern	1
