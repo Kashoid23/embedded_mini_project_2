@@ -21,7 +21,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdbool.h>
 
+#include "button.h"
+#include "buzzer.h"
+#include "traffic_light.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +50,8 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
-
+static button_t s_btn_pedestrian;
+static button_t s_btn_fault;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -61,7 +66,15 @@ static void MX_TIM3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+static void on_pedestrian_press(void)
+{
+	tl_request_crossing();
+}
 
+static void on_fault_press(void)
+{
+	tl_set_fault(TL_FAULT_ERROR);
+}
 /* USER CODE END 0 */
 
 /**
@@ -97,7 +110,21 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  const bool reset_by_watchdog = (__HAL_RCC_GET_FLAG(RCC_FLAG_IWDGRST) != 0U);
+  __HAL_RCC_CLEAR_RESET_FLAGS();
+  __HAL_DBGMCU_FREEZE_IWDG();
 
+  button_init(&s_btn_pedestrian, PED_BTN_GPIO_Port, PED_BTN_Pin, on_pedestrian_press);
+  button_init(&s_btn_fault, FAULT_KEY_GPIO_Port, FAULT_KEY_Pin, on_fault_press);
+  buzzer_init(&htim3, TIM_CHANNEL_1);
+
+  tl_init(HAL_GetTick());
+
+  if (reset_by_watchdog) {
+   	tl_set_fault(TL_FAULT_WATCHDOG);
+  }
+
+  (void)HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,6 +134,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	const uint32_t now = HAL_GetTick();
+
+	tl_update(now);
+	buzzer_update(now);
+
+	(void)HAL_IWDG_Refresh(&hiwdg);
   }
   /* USER CODE END 3 */
 }
@@ -349,7 +382,26 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if (htim->Instance == TIM2) {
+		const uint32_t now = HAL_GetTick();
 
+		button_tick(&s_btn_pedestrian, now);
+		button_tick(&s_btn_fault, now);
+	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if (GPIO_Pin == PED_BTN_Pin) {
+		button_on_edge_irq(&s_btn_pedestrian);
+	} else if (GPIO_Pin == FAULT_KEY_Pin) {
+		button_on_edge_irq(&s_btn_fault);
+	} else {
+		/* not our pin */
+	}
+}
 /* USER CODE END 4 */
 
 /**

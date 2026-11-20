@@ -1,0 +1,2 @@
+../Core/Src/relay.c:18:6:relay_enable	8	static
+../Core/Src/relay.c:23:6:relay_disable	8	static

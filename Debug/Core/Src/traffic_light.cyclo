@@ -1,0 +1,6 @@
+../Core/Src/traffic_light.c:76:13:tl_enter	2
+../Core/Src/traffic_light.c:92:6:tl_init	1
+../Core/Src/traffic_light.c:102:6:tl_request_crossing	3
+../Core/Src/traffic_light.c:111:6:tl_set_fault	2
+../Core/Src/traffic_light.c:120:6:tl_update	9
+../Core/Src/traffic_light.c:155:12:tl_get_state	1
